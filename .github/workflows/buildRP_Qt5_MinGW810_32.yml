@@ -1,0 +1,69 @@
+name: buildRP_Qt5.15.17_MinGW810_32
+
+on: workflow_dispatch
+#on: [push, pull_request]
+
+env:
+  QT_VERSION: '5.15.17'
+  QT_TYPE: 'static'
+  MinGW_VERSION: 'mingw810_32'
+  QT_RP: ''
+
+jobs:
+  windows_mingw64_static_release:
+    runs-on: windows-latest
+
+    steps:
+    # 检出本仓库
+    - name: Checkout repository
+      uses: actions/checkout@v5
+
+    # 检出RedPanda-CPP仓库
+    - name: Checkout repository of RedPanda-CPP
+      run: |
+        cd ..  #Directory: D:\a\buildRedPanda-CPP
+        git clone https://github.com/royqh1979/RedPanda-CPP.git
+
+    # 安装 MinGW810_32    
+    - name: Setup MinGW32
+      run: |
+        cd ..  #Directory: D:\a\buildRedPanda-CPP
+        mkdir -p mingw32
+        curl -L -o 8.1.0-release-posix-seh.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw81/qt.tools.win32_mingw810/8.1.0-1-202411201005i686-8.1.0-gdb-11.2.0-release-posix-dwarf-rt_v6-rev0.7z
+        7z x D:\a\buildRedPanda-CPP\8.1.0-release-posix-seh.7z -oD:\a\buildRedPanda-CPP\mingw32
+
+    # 安装 Qt
+    - name: Setup Qt
+      run: |
+        cd ..  #Directory: D:\a\buildRedPanda-CPP
+        curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.17_rev0/Qt_5.15.17-static-Release_mingw810_32.7z
+        7z x D:\a\buildRedPanda-CPP\Qt.7z -oD:\a\buildRedPanda-CPP
+
+    #D:\a\buildRedPanda-CPP\buildRedPanda-CPP    当前目录即仓库目录
+    #D:\a\buildRedPanda-CPP                      上级目录，这里当做根目录
+    #D:\a\buildRedPanda-CPP\RedPanda-CPP         RedPanda-CPP源代码目录
+    #D:\a\buildRedPanda-CPP\mingw64              Qt目录
+    #D:\a\buildRedPanda-CPP\6.10.0-static        Qt目录
+
+    # 构建RedPanda-CPP(调用cmd编译脚本)
+    - name: Build RedPanda-CPP
+      shell: cmd
+      run: |
+        setlocal
+        set QT_VERSION=${{env.QT_VERSION}}
+        set QT_TYPE=${{env.QT_TYPE}}
+        set MinGW_VERSION=${{env.MinGW_VERSION}}
+        set QT_RP=${{env.QT_RP}}
+        call D:\a\buildRedPanda-CPP\buildRedPanda-CPP\build\buildRP-mingw810_32.cmd %QT_VERSION% %QT_TYPE% %MinGW_VERSION% %QT_RP%
+
+    # 打包
+    - name: Package binaries
+      run: |
+        #ls     #D:\a\buildRedPanda-CPP\buildRedPanda-CPP(即仓库目录)
+        7z a RedPanda-CPP-Qt${{env.QT_VERSION}}-${{env.QT_TYPE}}-${{env.MinGW_VERSION}}${{env.QT_RP}}.7z ../RedPanda-CPP-Qt${{env.QT_VERSION}}-${{env.QT_TYPE}}-${{env.MinGW_VERSION}}${{env.QT_RP}} -mx=9
+
+    # 上传
+    - uses: actions/upload-artifact@v4
+      with:
+        name: RedPanda-CPP-Qt${{env.QT_VERSION}}-${{env.QT_TYPE}}-${{env.MinGW_VERSION}}${{env.QT_RP}}
+        path: RedPanda-CPP-Qt${{env.QT_VERSION}}-${{env.QT_TYPE}}-${{env.MinGW_VERSION}}${{env.QT_RP}}.7z
