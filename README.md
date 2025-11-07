@@ -31,15 +31,18 @@
 
 ## Qt5.15.18 完整版本(64位)
 1. Qt5.15.18 msvc2022_64     
-2. Qt5.15.18 MinGW810_64              (使用Qt官方默认编译器版本)(此版本构建环境同小熊猫C++官方64位版本)
+2. Qt5.15.18 MinGW810_64              (使用Qt官方默认编译器版本)(此版本构建二进制文件应同小熊猫C++官方64位版本)
+3. Qt5.15.18 MinGW810_1520_64         (Qt使用官方默认编译器构建+小熊猫C++使用最新MinGW64构建)
 
 ## Qt5.15.18 完整版本(32位)
 1. Qt5.15.18 msvc2022_32     
-2. Qt5.15.18 MinGW810_32              (使用Qt官方默认编译器版本)(此版本构建环境同小熊猫C++官方32位版本)
+2. Qt5.15.18 MinGW810_32              (使用Qt官方默认编译器版本)(此版本构建二进制文件应同小熊猫C++官方64位版本)
+2. Qt5.15.18 MinGW810_1520_32         (Qt使用官方默认编译器构建+小熊猫C++使用最新MinGW64构建)
 
 ## Qt5.15.18 RP版本
 1. Qt5.15.18 msvc2022_64_RP
-2. Qt5.15.18 MinGW810_64_RP           (使用Qt官方默认编译器版本)
+2. Qt5.15.18 MinGW810_64_RP           (使用Qt官方默认编译器版本)(此版本构建环境同小熊猫C++官方64位版本)
+2. Qt5.15.18 MinGW810_1520_64_RP      (Qt使用官方默认编译器构建+小熊猫C++使用最新MinGW64构建)
 
 ## Qt6.10.0 编译器
 1. **msvc2022_64**：Visual Studio 2022 Developer Command Prompt v17.14.16
@@ -54,4 +57,5 @@
 3. **mingw1520_64_UCRT**：[x86_64-15.2.0-release-posix-seh-ucrt-rt_v13-rev0.7z](https://github.com/niXman/mingw-builds-binaries/releases/download/15.2.0-rt_v13-rev0/x86_64-15.2.0-release-posix-seh-ucrt-rt_v13-rev0.7z)
 4. **mingw810_64**：[8.1.0-1-202411201005x86_64-8.1.0-gdb-11.2.0-release-posix-seh-rt_v6-rev0.7z](https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw81/qt.tools.win64_mingw810/8.1.0-1-202411201005x86_64-8.1.0-gdb-11.2.0-release-posix-seh-rt_v6-rev0.7z) (Qt官方默认编译器版本)
 5. **mingw810_32**：[8.1.0-1-202411201005i686-8.1.0-gdb-11.2.0-release-posix-dwarf-rt_v6-rev0.7z](https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw81/qt.tools.win32_mingw810/8.1.0-1-202411201005i686-8.1.0-gdb-11.2.0-release-posix-dwarf-rt_v6-rev0.7z) (Qt官方默认编译器版本)
-
+4. **mingw1520_64**：[x86_64-15.2.0-release-posix-seh-msvcrt-rt_v13-rev0.7z](https://github.com/niXman/mingw-builds-binaries/releases/download/15.2.0-rt_v13-rev0/x86_64-15.2.0-release-posix-seh-msvcrt-rt_v13-rev0.7z)
+5. **mingw1520_32**：[i686-15.2.0-release-posix-dwarf-msvcrt-rt_v13-rev0.7z](https://github.com/niXman/mingw-builds-binaries/releases/download/15.2.0-rt_v13-rev0/i686-15.2.0-release-posix-dwarf-msvcrt-rt_v13-rev0.7z) 
