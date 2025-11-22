@@ -92,5 +92,5 @@ jobs:
 # D:\a\buildRedPanda-CPP                      上级目录，这里当做根目录
 # D:\a\buildRedPanda-CPP\RedPanda-CPP         RedPanda-CPP源代码目录
 # D:\a\buildRedPanda-CPP\mingw64              Qt目录
-# D:\a\buildRedPanda-CPP\6.10.0-static        Qt目录
+# D:\a\buildRedPanda-CPP\6.10.1-static        Qt目录
 # =============================================================================
