@@ -15,19 +15,19 @@
 2. 有"RP"版本：使用的Qt为从Qt组件源代码构建，目前只构建qtbase、qttools、qttranslations、qtsvg共4个组件
 3. 理论上，两者构建的小熊猫C++二进制文件无差异
 
-## Qt6.10.0 完整版本
-1. Qt6.10.0 msvc2022_64
-2. Qt6.10.0 MinGW1310_64               (使用Qt官方默认编译器版本)
-3. Qt6.10.0 MinGW1520_64(UCRT)    
-4. Qt6.10.0 LLVM-MinGW17.0.6(UCRT)     (使用Qt官方默认编译器版本)
-5. Qt6.10.0 LLVM-MinGW21.1.3(UCRT)
+## Qt6.10.1 完整版本
+1. Qt6.10.1 msvc2022_64
+2. Qt6.10.1 MinGW1310_64               (使用Qt官方默认编译器版本)
+3. Qt6.10.1 MinGW1520_64(UCRT)    
+4. Qt6.10.1 LLVM-MinGW17.0.6(UCRT)     (使用Qt官方默认编译器版本)
+5. Qt6.10.1 LLVM-MinGW21.1.3(UCRT)
 
-## Qt6.10.0 RP版本
-1. Qt6.10.0 msvc2022_64_RP
-2. Qt6.10.0 MinGW1310_64_RP            (使用Qt官方默认编译器版本)
-3. Qt6.10.0 MinGW1520_64_RP(UCRT)
-4. Qt6.10.0 LLVM-MinGW17.0.6_RP(UCRT)  (使用Qt官方默认编译器版本)
-5. Qt6.10.0 LLVM-MinGW21.1.3_RP(UCRT)
+## Qt6.10.1 RP版本
+1. Qt6.10.1 msvc2022_64_RP
+2. Qt6.10.1 MinGW1310_64_RP            (使用Qt官方默认编译器版本)
+3. Qt6.10.1 MinGW1520_64_RP(UCRT)
+4. Qt6.10.1 LLVM-MinGW17.0.6_RP(UCRT)  (使用Qt官方默认编译器版本)
+5. Qt6.10.1 LLVM-MinGW21.1.3_RP(UCRT)
 
 ## Qt5.15.18 完整版本(64位)
 1. Qt5.15.18 msvc2022_64     
@@ -44,12 +44,12 @@
 2. Qt5.15.18 MinGW810_64_RP           (使用Qt官方默认编译器版本)(此版本构建环境同小熊猫C++官方64位版本)
 2. Qt5.15.18 MinGW810_1520_64_RP      (Qt使用官方默认编译器构建+小熊猫C++使用最新MinGW64构建)
 
-## Qt6.10.0 编译器
-1. **msvc2022_64**：Visual Studio 2022 Developer Command Prompt v17.14.16
+## Qt6.10.1 编译器
+1. **msvc2022_64**：Visual Studio 2022 Developer Command Prompt v17.14.19
 2. **mingw1310_64**：[13.1.0-202407240918mingw1310.7z](https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw1310/qt.tools.win64_mingw1310/13.1.0-202407240918mingw1310.7z) (Qt官方默认编译器版本)
 3. **mingw1520_64_UCRT**：[x86_64-15.2.0-release-posix-seh-ucrt-rt_v13-rev0.7z](https://github.com/niXman/mingw-builds-binaries/releases/download/15.2.0-rt_v13-rev0/x86_64-15.2.0-release-posix-seh-ucrt-rt_v13-rev0.7z)
 4. **llvm-mingw17.0.6_64_UCRT**：[17.0.6-202409091150llvm_mingw1706.7z](https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_llvm_mingw1706/qt.tools.win64_llvm_mingw1706/17.0.6-202409091150llvm_mingw1706.7z)  (Qt官方默认编译器版本)
-5. **llvm-mingw21.1.3_64_UCRT**：[llvm-mingw-20251007-ucrt-x86_64.zip](https://github.com/mstorsjo/llvm-mingw/releases/download/20251007/llvm-mingw-20251007-ucrt-x86_64.zip)
+5. **llvm-mingw21.1.6_64_UCRT**：[llvm-mingw-20251118-ucrt-x86_64.zip](https://github.com/mstorsjo/llvm-mingw/releases/download/20251118/llvm-mingw-20251118-ucrt-x86_64.zip)
 
 ## Qt5.15.18 编译器
 1. **msvc2022_64**：Visual Studio 2022 Developer Command Prompt v17.14.18
