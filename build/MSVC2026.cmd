@@ -16,10 +16,10 @@ set BUILD_DIR=D:\a\buildRedPanda-CPP\build
 set INSTALL_DIR=D:\a\buildRedPanda-CPP\RedPanda-CPP-Qt%QT_VERSION%-%QT_TYPE%-%COMPILER_VERSION%%QT_RP%
 
 :: 仅 MSVC 工具链需要设置
-set VS_INSTALL_PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise
+set VS_INSTALL_PATH=C:\Program Files\Microsoft Visual Studio\18\Enterprise
 :: 仅 MSVC 工具链需要设置；amd64 或 x86
-if msvc2022_32==%COMPILER_VERSION% (set VC_ARCH=x86)
-if msvc2022_64==%COMPILER_VERSION% (set VC_ARCH=amd64)
+if msvc2026_32==%COMPILER_VERSION% (set VC_ARCH=x86)
+if msvc2026_64==%COMPILER_VERSION% (set VC_ARCH=amd64)
 echo COMPILER_VERSION=%COMPILER_VERSION%
 echo VC_ARCH=%VC_ARCH%
 :: 仅 MSVC 工具链需要；如果未安装 Qt Creator 则不要设置
@@ -30,14 +30,11 @@ mkdir "%BUILD_DIR%" && cd /d "%BUILD_DIR%"
 
 :: 配置、构建、安装。对于 MSVC 工具链：
 call "%VS_INSTALL_PATH%\Common7\Tools\VsDevCmd.bat" -arch=%VC_ARCH%
-qmake PREFIX="%INSTALL_DIR%" "%SRC_DIR%\Red_Panda_CPP.pro"
+cmake -S "%SRC_DIR%" -B "%BUILD_DIR%" -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="%INSTALL_DIR%" -DCMAKE_COLOR_DIAGNOSTICS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded"
+:: -DCMAKE_PREFIX_PATH="%QT_PATH%" (实测暂不加此项构建成功)
+:: -DCMAKE_EXE_LINKER_FLAGS="-static" (实测暂不加此项构建成功)
+cmake --build %BUILD_DIR% --parallel
+cmake --install %BUILD_DIR% --strip
 
-set JOM=%QT_CREATOR_DIR%\bin\jom\jom.exe
-if "%QT_CREATOR_DIR%" neq "" (
-   "%JOM%" -j%NUMBER_OF_PROCESSORS%
-   "%JOM%" install
-) else (
-   nmake
-   nmake install
-)
+:: 使用Qt动态库时需开启(使用Qt静态库时以下无作用)
 :: windeployqt "%INSTALL_DIR%\RedPandaIDE.exe"

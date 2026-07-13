@@ -19,7 +19,11 @@ set INSTALL_DIR=D:\a\buildRedPanda-CPP\RedPanda-CPP-Qt%QT_VERSION%-%QT_TYPE%-%CO
 mkdir "%BUILD_DIR%" && cd /d "%BUILD_DIR%"
 
 :: 配置、构建、安装。对于 MinGW 工具链：
-qmake PREFIX="%INSTALL_DIR%" "%SRC_DIR%\Red_Panda_CPP.pro"
-mingw32-make -j%NUMBER_OF_PROCESSORS%
-mingw32-make install
+cmake -S "%SRC_DIR%" -B "%BUILD_DIR%" -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="%INSTALL_DIR%" -DCMAKE_COLOR_DIAGNOSTICS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DQT_FEATURE_webp=OFF
+:: -DCMAKE_PREFIX_PATH="%QT_PATH%" (实测暂不加此项构建成功)
+:: -DCMAKE_EXE_LINKER_FLAGS="-static" (实测暂不加此项构建成功)
+cmake --build %BUILD_DIR% --parallel
+cmake --install %BUILD_DIR% --strip
+
+:: 使用Qt动态库时需开启(使用Qt静态库时以下无作用)
 :: windeployqt "%INSTALL_DIR%\RedPandaIDE.exe"

@@ -1,24 +1,24 @@
-name: MinGW64_Qt5
-
-#本文档中：Qt5采用mingw810_64或mingw810_32编译、小熊猫C++采用最新的mingw64或mingw32编译(均为MSVCRT)
+name: MSVC2022
 
 on: workflow_dispatch
 #on: [push, pull_request]
 
 jobs:
   windows:
-    runs-on: windows-latest
+    runs-on: windows-2022
     strategy:
       fail-fast: false
       matrix:
-        qt_version: ['5.15.19']
+        qt_version: ['5.15.19', '6.11.1']
         qt_type: ['static']
-        compiler_version: ["mingw810_1610_32", "mingw810_1610_64"]
+        compiler_version: ["msvc2022_32", "msvc2022_64"]
         qt_rp: ["", "_RP"]
         exclude:
           - qt_version: '5.15.19'
-            compiler_version: 'mingw810_1610_32'
+            compiler_version: 'msvc2022_32'
             qt_rp: "_RP"
+          - qt_version: '6.11.1'
+            compiler_version: 'msvc2022_32'
 
     steps:
 
@@ -32,8 +32,26 @@ jobs:
         cd ..  #Directory: D:\a\buildRedPanda-CPP
         git clone https://github.com/royqh1979/RedPanda-CPP.git
 
-    # 安装 编译器和Qt库
-    - name: Setup Compiler and Qt
+    # 安装msvc x86
+    - name: Add MSBuild_x86 to PATH
+      if: ${{ matrix.compiler_version == 'msvc2022_32' }}
+      uses: microsoft/setup-msbuild@v2
+      with:
+        msbuild-architecture: x86
+        
+    # 安装msvc x64
+    - name: Add MSBuild_x64 to PATH
+      if: ${{ matrix.compiler_version == 'msvc2022_64' }}
+      uses: microsoft/setup-msbuild@v2
+      with:
+        msbuild-architecture: x64
+
+    # 安装vsdevenv
+    - name: Setup vsdevenv
+      uses: seanmiddleditch/gha-setup-vsdevenv@master
+
+    # 安装 Qt库
+    - name: Setup Qt
       shell: pwsh
       run: |
         $qt_v="${{ matrix.qt_version }}"
@@ -43,25 +61,17 @@ jobs:
 
         cd ..  #Directory: D:\a\buildRedPanda-CPP
 
-        if ($co_v -eq "mingw810_1610_32"){
-          curl -L -o i686-release-posix-dwarf-msvcrt.7z https://github.com/niXman/mingw-builds-binaries/releases/download/16.1.0-rt_v14-rev1/i686-16.1.0-release-posix-dwarf-msvcrt-rt_v14-rev1.7z
-          7z x D:\a\buildRedPanda-CPP\i686-release-posix-dwarf-msvcrt.7z -oD:\a\buildRedPanda-CPP
-        }
-        if ($co_v -eq "mingw810_1610_64"){
-          curl -L -o x86_64-release-posix-seh-msvcrt.7z https://github.com/niXman/mingw-builds-binaries/releases/download/16.1.0-rt_v14-rev1/x86_64-16.1.0-release-posix-seh-msvcrt-rt_v14-rev1.7z
-          7z x D:\a\buildRedPanda-CPP\x86_64-release-posix-seh-msvcrt.7z -oD:\a\buildRedPanda-CPP
-        }
-
-        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1610_32") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_32.7z }
-        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1610_64") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_64.7z }
-        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1610_64") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_64_RP.7z }
-
+        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "msvc2022_32") -and ($qt_r -eq "" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_msvc2022_32.7z }
+        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "msvc2022_64") -and ($qt_r -eq "" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_msvc2022_64.7z }
+        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "msvc2022_64") -and ($qt_r -eq "_RP" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_msvc2022_64_RP.7z }
+        if (( $qt_v -eq "6.11.1") -and ($co_v -eq "msvc2022_64") -and ($qt_r -eq "" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.1_rev1/Qt_6.11.1-static-Release_msvc2022_64.7z }
+        if (( $qt_v -eq "6.11.1") -and ($co_v -eq "msvc2022_64") -and ($qt_r -eq "_RP" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.1_rev1/Qt_6.11.1-static-Release_msvc2022_64_RP.7z }
         7z x D:\a\buildRedPanda-CPP\Qt.7z -oD:\a\buildRedPanda-CPP
-
-
 
     # 构建RedPanda-CPP(调用cmd编译脚本)
     - name: Build RedPanda-CPP with ${{ matrix.qt_version }}-${{ matrix.compiler_version }}${{ matrix.qt_rp }}
@@ -72,7 +82,7 @@ jobs:
         set QT_TYPE=${{ matrix.qt_type }}
         set COMPILER_VERSION=${{ matrix.compiler_version }}
         set QT_RP=${{ matrix.qt_rp }}
-        call D:\a\buildRedPanda-CPP\buildRedPanda-CPP\build\MinGW64_Qt5.cmd %QT_VERSION% %QT_TYPE% %COMPILER_VERSION% %QT_RP%
+        call D:\a\buildRedPanda-CPP\buildRedPanda-CPP\build\MSVC2022.cmd %QT_VERSION% %QT_TYPE% %COMPILER_VERSION% %QT_RP%
 
     # 打包
     - name: Package binaries
