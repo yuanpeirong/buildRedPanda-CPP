@@ -111,7 +111,7 @@ jobs:
         set QT_TYPE=${{ matrix.qt_type }}
         set COMPILER_VERSION=${{ matrix.compiler_version }}
         set QT_RP=${{ matrix.qt_rp }}
-        call D:\a\buildRedPanda-CPP\buildRedPanda-CPP\build\MinGW64.cmd %QT_VERSION% %QT_TYPE% %COMPILER_VERSION% %QT_RP%
+        call D:\a\buildRedPanda-CPP\buildRedPanda-CPP\build\MinGW64_LLVM-MinGW.cmd %QT_VERSION% %QT_TYPE% %COMPILER_VERSION% %QT_RP%
 
     # 打包
     - name: Package binaries
