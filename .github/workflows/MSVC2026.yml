@@ -13,10 +13,6 @@ jobs:
         qt_type: ['static']
         compiler_version: ["msvc2026_64"]
         qt_rp: ["", "_RP"]
-        exclude:
-          - qt_version: '6.11.1'
-            compiler_version: 'msvc2026_64'
-            qt_rp: ""
 
     steps:
 
