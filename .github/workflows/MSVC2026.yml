@@ -13,10 +13,6 @@ jobs:
         qt_type: ['static']
         compiler_version: ["msvc2026_64"]
         qt_rp: ["", "_RP"]
-        exclude:
-          - qt_version: '6.11.1'
-            compiler_version: 'msvc2026_64'
-            qt_rp: ""
 
     steps:
 
@@ -63,6 +59,8 @@ jobs:
           { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_msvc2026_64.7z }
         if (( $qt_v -eq "5.15.19") -and ($co_v -eq "msvc2026_64") -and ($qt_r -eq "_RP" ))
           { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_msvc2026_64_RP.7z }
+        if (( $qt_v -eq "6.11.1") -and ($co_v -eq "msvc2026_64") -and ($qt_r -eq "" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.1_rev1/Qt_6.11.1-static-Release_msvc2026_64.7z }
         if (( $qt_v -eq "6.11.1") -and ($co_v -eq "msvc2026_64") -and ($qt_r -eq "_RP" ))
           { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.1_rev1/Qt_6.11.1-static-Release_msvc2026_64_RP.7z }
         7z x D:\a\buildRedPanda-CPP\Qt.7z -oD:\a\buildRedPanda-CPP
