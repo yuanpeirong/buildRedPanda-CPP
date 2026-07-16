@@ -1,6 +1,6 @@
-name: MinGW810_64_Qt5.15.19
+name: MinGW810_32_Qt5.15.19_RP
 
-#本文档中：Qt5.15.19、小熊猫C++采用mingw810_64(MSVCRT)编译：与官方发行版的Qt5.15.18编译方式一致、编译器一致
+#本文档中：Qt5.15.19、小熊猫C++采用mingw810_32(MSVCRT)编译：与官方发行版的Qt5.15.18编译方式一致、编译器一致
 
 on: workflow_dispatch
 #on: [push, pull_request]
@@ -13,7 +13,7 @@ jobs:
       matrix:
         qt_version: ['5.15.19']
         qt_type: ['static']
-        compiler_version: ["mingw810_64"]
+        compiler_version: ["mingw810_32"]
         qt_rp: ["_RP"]
 
     steps:
@@ -39,13 +39,13 @@ jobs:
 
         cd ..  #Directory: D:\a\buildRedPanda-CPP
 
-        if ($co_v -eq "mingw810_64"){
-          curl -L -o 8.1.0-release-posix-seh.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw81/qt.tools.win64_mingw810/8.1.0-1-202411201005x86_64-8.1.0-gdb-11.2.0-release-posix-seh-rt_v6-rev0.7z
-          7z x D:\a\buildRedPanda-CPP\8.1.0-release-posix-seh.7z -oD:\a\buildRedPanda-CPP\mingw64
+        if ($co_v -eq "mingw810_32"){
+          curl -L -o 8.1.0-release-posix-seh.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw81/qt.tools.win32_mingw810/8.1.0-1-202411201005i686-8.1.0-gdb-11.2.0-release-posix-dwarf-rt_v6-rev0.7z
+          7z x D:\a\buildRedPanda-CPP\8.1.0-release-posix-seh.7z -oD:\a\buildRedPanda-CPP\mingw32
         }
 
-        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_64") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_64_RP.7z }
+        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_32") -and ($qt_r -eq "_RP" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_32_RP.7z }
         7z x D:\a\buildRedPanda-CPP\Qt.7z -oD:\a\buildRedPanda-CPP
 
     # 构建RedPanda-CPP(调用cmd编译脚本)
@@ -76,6 +76,6 @@ jobs:
 # D:\a\buildRedPanda-CPP\buildRedPanda-CPP    当前目录即仓库目录
 # D:\a\buildRedPanda-CPP                      上级目录，这里当做根目录
 # D:\a\buildRedPanda-CPP\RedPanda-CPP         RedPanda-CPP源代码目录
-# D:\a\buildRedPanda-CPP\mingw64              Qt目录
+# D:\a\buildRedPanda-CPP\mingw32              Qt目录
 # D:\a\buildRedPanda-CPP\6.11.1-static        Qt目录
 # =============================================================================
