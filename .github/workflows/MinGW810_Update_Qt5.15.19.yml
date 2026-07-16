@@ -1,4 +1,4 @@
-name: MinGW64_Qt5
+name: MinGW810_Update_Qt5.15.19
 
 #本文档中：Qt5采用mingw810_64或mingw810_32编译、小熊猫C++采用最新的mingw64或mingw32编译(均为MSVCRT)
 
@@ -15,10 +15,6 @@ jobs:
         qt_type: ['static']
         compiler_version: ["mingw810_1610_32", "mingw810_1610_64"]
         qt_rp: ["", "_RP"]
-        exclude:
-          - qt_version: '5.15.19'
-            compiler_version: 'mingw810_1610_32'
-            qt_rp: "_RP"
 
     steps:
 
@@ -54,6 +50,8 @@ jobs:
 
         if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1610_32") -and ($qt_r -eq "" ))
           { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_32.7z }
+        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1610_32") -and ($qt_r -eq "_RP" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_32_RP.7z }
         if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1610_64") -and ($qt_r -eq "" ))
           { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_64.7z }
         if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1610_64") -and ($qt_r -eq "_RP" ))
