@@ -24,7 +24,6 @@ mkdir "%BUILD_DIR%" && cd /d "%BUILD_DIR%"
 :: 配置、构建、安装。对于 MinGW64、LLVM-MinGW 工具链：
 cmake -S "%SRC_DIR%" -B "%BUILD_DIR%" -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="%INSTALL_DIR%" -DCMAKE_COLOR_DIAGNOSTICS=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_EXE_LINKER_FLAGS="-static"
 :: -DCMAKE_PREFIX_PATH="%QT_PATH%" (实测暂不加此项构建成功)
-:: -DCMAKE_EXE_LINKER_FLAGS="-static" (实测暂不加此项构建成功)
 cmake --build %BUILD_DIR% --parallel
 cmake --install %BUILD_DIR% --strip
 
