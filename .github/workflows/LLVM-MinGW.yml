@@ -81,9 +81,10 @@ jobs:
 
 # =============================================================================
 # 路径说明
-# D:\a\buildRedPanda-CPP\buildRedPanda-CPP    当前目录即仓库目录
-# D:\a\buildRedPanda-CPP                      上级目录，这里当做根目录
-# D:\a\buildRedPanda-CPP\RedPanda-CPP         RedPanda-CPP源代码目录
-# D:\a\buildRedPanda-CPP\mingw64              Qt目录
-# D:\a\buildRedPanda-CPP\6.11.1-static        Qt目录
+# D:\a\buildRedPanda-CPP\buildRedPanda-CPP         当前目录即仓库目录
+# D:\a\buildRedPanda-CPP                           上级目录，这里当做根目录
+# D:\a\buildRedPanda-CPP\RedPanda-CPP              RedPanda-CPP源代码目录
+# D:\a\buildRedPanda-CPP\Tools\llvm-mingw1706_64   编译器目录
+# D:\a\buildRedPanda-CPP\%LLVM-MINGW_VERSION%      编译器目录
+# D:\a\buildRedPanda-CPP\6.11.1-static             Qt目录
 # =============================================================================
