@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qt_version: ['5.15.19', '6.11.2']
+        qt_version: ['5.15.19', '6.12.0']
         qt_type: ['static']
         compiler_version: ["msvc2022_32", "msvc2022_64"]
         qt_rp: ["", "_RP"]
@@ -17,7 +17,7 @@ jobs:
           - qt_version: '5.15.19'
             compiler_version: 'msvc2022_32'
             qt_rp: "_RP"
-          - qt_version: '6.11.2'
+          - qt_version: '6.12.0'
             compiler_version: 'msvc2022_32'
 
     steps:
@@ -67,10 +67,10 @@ jobs:
           { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_msvc2022_64.7z }
         if (( $qt_v -eq "5.15.19") -and ($co_v -eq "msvc2022_64") -and ($qt_r -eq "_RP" ))
           { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_msvc2022_64_RP.7z }
-        if (( $qt_v -eq "6.11.2") -and ($co_v -eq "msvc2022_64") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.2_rev0/Qt_6.11.2-static-Release_msvc2022_64.7z }
-        if (( $qt_v -eq "6.11.2") -and ($co_v -eq "msvc2022_64") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.2_rev0/Qt_6.11.2-static-Release_msvc2022_64_RP.7z }
+        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "msvc2022_64") -and ($qt_r -eq "" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_msvc2022_64.7z }
+        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "msvc2022_64") -and ($qt_r -eq "_RP" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_msvc2022_64_RP.7z }
         7z x D:\a\buildRedPanda-CPP\Qt.7z -oD:\a\buildRedPanda-CPP
 
     # 构建RedPanda-CPP(调用cmd编译脚本)
@@ -101,5 +101,5 @@ jobs:
 # D:\a\buildRedPanda-CPP\buildRedPanda-CPP    当前目录即仓库目录
 # D:\a\buildRedPanda-CPP                      上级目录，这里当做根目录
 # D:\a\buildRedPanda-CPP\RedPanda-CPP         RedPanda-CPP源代码目录
-# D:\a\buildRedPanda-CPP\6.11.2-static        Qt目录
+# D:\a\buildRedPanda-CPP\6.12.0-static        Qt目录
 # =============================================================================

@@ -2,7 +2,7 @@
 @cd /d %~dp0
 
 :: 设置LLVM-MINGW版本代号，更新LLVM-MINGW需修改
-SET LLVM-MINGW_VERSION=llvm-mingw-20260616-ucrt-x86_64
+SET LLVM-MINGW_VERSION=llvm-mingw-20261104-ucrt-x86_64
 
 :: 设置Qt版本、编译器版本代号
 SET QT_VERSION=%1
@@ -11,7 +11,7 @@ SET COMPILER_VERSION=%3
 SET QT_RP=%4
 
 :: 设置Qt路径和编译器路径
-set PATH=D:\a\buildRedPanda-CPP\%QT_VERSION%-%QT_TYPE%\%COMPILER_VERSION%%QT_RP%\bin;D:\a\buildRedPanda-CPP\Tools\llvm-mingw1706_64\bin;D:\a\buildRedPanda-CPP\%LLVM-MINGW_VERSION%\bin;%PATH%
+set PATH=D:\a\buildRedPanda-CPP\%QT_VERSION%-%QT_TYPE%\%COMPILER_VERSION%%QT_RP%\bin;D:\a\buildRedPanda-CPP\Tools\llvm-mingw2217_64\bin;D:\a\buildRedPanda-CPP\%LLVM-MINGW_VERSION%\bin;%PATH%
 
 :: 设置源代码路径、build文件夹路径、安装文件夹路径(即使路径含空格也不加引号)
 set SRC_DIR=D:\a\buildRedPanda-CPP\RedPanda-CPP

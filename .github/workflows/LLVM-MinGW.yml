@@ -9,9 +9,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qt_version: ['6.11.2']
+        qt_version: ['6.12.0']
         qt_type: ['static']
-        compiler_version: ["llvm-mingw17.0.6_64_UCRT", "llvm-mingw22.1.8_64_UCRT"]
+        compiler_version: ["llvm-mingw22.1.7_64_UCRT", "llvm-mingw23.1.5_64_UCRT"]
         qt_rp: ["", "_RP"]
 
     steps:
@@ -37,23 +37,23 @@ jobs:
 
         cd ..  #Directory: D:\a\buildRedPanda-CPP
 
-        if ($co_v -eq "llvm-mingw17.0.6_64_UCRT"){
-          curl -L -o llvm_mingw1706.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_llvm_mingw1706/qt.tools.win64_llvm_mingw1706/17.0.6-202409091150llvm_mingw1706.7z
-          7z x D:\a\buildRedPanda-CPP\llvm_mingw1706.7z -oD:\a\buildRedPanda-CPP
+        if ($co_v -eq "llvm-mingw22.1.7_64_UCRT"){
+          curl -L -o llvm_mingw2217.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_llvm_mingw2217/qt.tools.win64_llvm_mingw2217/22.1.7-202608200704llvm_mingw2217.7z
+          7z x D:\a\buildRedPanda-CPP\llvm_mingw2217.7z -oD:\a\buildRedPanda-CPP\Tools\llvm-mingw2217_64
         }
-        if ($co_v -eq "llvm-mingw22.1.8_64_UCRT"){
-          curl -L -o llvm-mingw.zip https://github.com/mstorsjo/llvm-mingw/releases/download/20260616/llvm-mingw-20260616-ucrt-x86_64.zip
+        if ($co_v -eq "llvm-mingw23.1.5_64_UCRT"){
+          curl -L -o llvm-mingw.zip https://github.com/mstorsjo/llvm-mingw/releases/download/20261104/llvm-mingw-20261104-ucrt-x86_64.zip
           unzip -q llvm-mingw.zip -d ./
         }
 
-        if (( $qt_v -eq "6.11.2") -and ($co_v -eq "llvm-mingw17.0.6_64_UCRT") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.2_rev0/Qt_6.11.2-static-Release_llvm-mingw17.0.6_64_UCRT.7z }
-        if (( $qt_v -eq "6.11.2") -and ($co_v -eq "llvm-mingw17.0.6_64_UCRT") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.2_rev0/Qt_6.11.2-static-Release_llvm-mingw17.0.6_64_UCRT_RP.7z }
-        if (( $qt_v -eq "6.11.2") -and ($co_v -eq "llvm-mingw22.1.8_64_UCRT") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.2_rev0/Qt_6.11.2-static-Release_llvm-mingw22.1.8_64_UCRT.7z }
-        if (( $qt_v -eq "6.11.2") -and ($co_v -eq "llvm-mingw22.1.8_64_UCRT") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.2_rev0/Qt_6.11.2-static-Release_llvm-mingw22.1.8_64_UCRT_RP.7z }
+        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "llvm-mingw22.1.7_64_UCRT") -and ($qt_r -eq "" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_llvm-mingw22.1.7_64_UCRT.7z }
+        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "llvm-mingw22.1.7_64_UCRT") -and ($qt_r -eq "_RP" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_llvm-mingw22.1.7_64_UCRT_RP.7z }
+        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "llvm-mingw23.1.5_64_UCRT") -and ($qt_r -eq "" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_llvm-mingw23.1.5_64_UCRT.7z }
+        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "llvm-mingw23.1.5_64_UCRT") -and ($qt_r -eq "_RP" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_llvm-mingw23.1.5_64_UCRT_RP.7z }
         7z x D:\a\buildRedPanda-CPP\Qt.7z -oD:\a\buildRedPanda-CPP
 
     # 构建RedPanda-CPP(调用cmd编译脚本)
@@ -86,5 +86,5 @@ jobs:
 # D:\a\buildRedPanda-CPP\RedPanda-CPP              RedPanda-CPP源代码目录
 # D:\a\buildRedPanda-CPP\Tools\llvm-mingw1706_64   编译器目录
 # D:\a\buildRedPanda-CPP\%LLVM-MINGW_VERSION%      编译器目录
-# D:\a\buildRedPanda-CPP\6.11.2-static             Qt目录
+# D:\a\buildRedPanda-CPP\6.12.0-static             Qt目录
 # =============================================================================

@@ -8,7 +8,7 @@ SET COMPILER_VERSION=%3
 SET QT_RP=%4
 
 :: 设置Qt路径和编译器路径
-set PATH=D:\a\buildRedPanda-CPP\%QT_VERSION%-%QT_TYPE%\%COMPILER_VERSION%%QT_RP%\bin;D:\a\buildRedPanda-CPP\mingw64\bin;D:\a\buildRedPanda-CPP\Tools\mingw1310_64\bin;D:\a\buildRedPanda-CPP\mingw32\bin;%PATH%
+set PATH=D:\a\buildRedPanda-CPP\%QT_VERSION%-%QT_TYPE%\%COMPILER_VERSION%%QT_RP%\bin;D:\a\buildRedPanda-CPP\mingw64\bin;D:\a\buildRedPanda-CPP\Tools\mingw1510_64\bin;D:\a\buildRedPanda-CPP\mingw32\bin;%PATH%
 
 :: 设置源代码路径、build文件夹路径、安装文件夹路径(即使路径含空格也不加引号)
 set SRC_DIR=D:\a\buildRedPanda-CPP\RedPanda-CPP
