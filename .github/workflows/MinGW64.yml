@@ -9,16 +9,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        qt_version: ['5.15.19', '6.11.2']
+        qt_version: ['5.15.19', '6.12.0']
         qt_type: ['static']
-        compiler_version: ["mingw810_32", "mingw810_64", "mingw1310_64", "mingw1620_64_UCRT"]
+        compiler_version: ["mingw810_32", "mingw810_64", "mingw1510_64", "mingw1620_64_UCRT"]
         qt_rp: ["", "_RP"]
         exclude:
           - qt_version: '5.15.19'
-            compiler_version: 'mingw1310_64'
-          - qt_version: '6.11.2'
+            compiler_version: 'mingw1510_64'
+          - qt_version: '6.12.0'
             compiler_version: 'mingw810_32'
-          - qt_version: '6.11.2'
+          - qt_version: '6.12.0'
             compiler_version: 'mingw810_64'
 
     steps:
@@ -52,9 +52,9 @@ jobs:
           curl -L -o 8.1.0-release-posix-seh.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw81/qt.tools.win64_mingw810/8.1.0-1-202411201005x86_64-8.1.0-gdb-11.2.0-release-posix-seh-rt_v6-rev0.7z
           7z x D:\a\buildRedPanda-CPP\8.1.0-release-posix-seh.7z -oD:\a\buildRedPanda-CPP\mingw64
         }
-        if ($co_v -eq "mingw1310_64"){
-          curl -L -o mingw1310.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw1310/qt.tools.win64_mingw1310/13.1.0-202407240918mingw1310.7z
-          7z x D:\a\buildRedPanda-CPP\mingw1310.7z -oD:\a\buildRedPanda-CPP
+        if ($co_v -eq "mingw1510_64"){
+          curl -L -o mingw1510.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw1510/qt.tools.win64_mingw1510/15.1.0-202610271023mingw1510.7z
+          7z x D:\a\buildRedPanda-CPP\mingw1510.7z -oD:\a\buildRedPanda-CPP\Tools\mingw1510_64
         }
         if ($co_v -eq "mingw1620_64_UCRT"){
           curl -L -o x86_64-release-posix-seh-ucrt.7z https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/x86_64-16.2.0-release-posix-seh-ucrt-rt_v14-rev1.7z
@@ -73,14 +73,14 @@ jobs:
           { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw1620_64_UCRT.7z }
         if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "_RP" ))
           { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw1620_64_UCRT_RP.7z }
-        if (( $qt_v -eq "6.11.2") -and ($co_v -eq "mingw1310_64") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.2_rev0/Qt_6.11.2-static-Release_mingw1310_64.7z }
-        if (( $qt_v -eq "6.11.2") -and ($co_v -eq "mingw1310_64") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.2_rev0/Qt_6.11.2-static-Release_mingw1310_64_RP.7z }
-        if (( $qt_v -eq "6.11.2") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.2_rev0/Qt_6.11.2-static-Release_mingw1620_64_UCRT.7z }
-        if (( $qt_v -eq "6.11.2") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.11.2_rev0/Qt_6.11.2-static-Release_mingw1620_64_UCRT_RP.7z }
+        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "mingw1510_64") -and ($qt_r -eq "" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_mingw1510_64.7z }
+        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "mingw1510_64") -and ($qt_r -eq "_RP" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_mingw1510_64_RP.7z }
+        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_mingw1620_64_UCRT.7z }
+        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "_RP" ))
+          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_mingw1620_64_UCRT_RP.7z }
         7z x D:\a\buildRedPanda-CPP\Qt.7z -oD:\a\buildRedPanda-CPP
 
     # 构建RedPanda-CPP(调用cmd编译脚本)
@@ -113,5 +113,5 @@ jobs:
 # D:\a\buildRedPanda-CPP\RedPanda-CPP         RedPanda-CPP源代码目录
 # D:\a\buildRedPanda-CPP\mingw64              编译器目录
 # D:\a\buildRedPanda-CPP\mingw32              编译器目录
-# D:\a\buildRedPanda-CPP\6.11.2-static        Qt目录
+# D:\a\buildRedPanda-CPP\6.12.0-static        Qt目录
 # =============================================================================
