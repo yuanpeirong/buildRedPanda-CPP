@@ -3,9 +3,14 @@ name: MSVC2022
 on: workflow_dispatch
 #on: [push, pull_request]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   windows:
     runs-on: windows-2022
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:

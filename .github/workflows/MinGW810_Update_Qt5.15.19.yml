@@ -5,9 +5,14 @@ name: MinGW810_Update_Qt5.15.19
 on: workflow_dispatch
 #on: [push, pull_request]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   windows:
     runs-on: windows-latest
+    timeout-minutes: 120
     strategy:
       fail-fast: false
       matrix:
