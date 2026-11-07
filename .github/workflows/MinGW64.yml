@@ -45,42 +45,48 @@ jobs:
         cd ..  #Directory: D:\a\buildRedPanda-CPP
 
         if ($co_v -eq "mingw810_32"){
-          curl -L -o 8.1.0-release-posix-seh.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw81/qt.tools.win32_mingw810/8.1.0-1-202411201005i686-8.1.0-gdb-11.2.0-release-posix-dwarf-rt_v6-rev0.7z
-          7z x D:\a\buildRedPanda-CPP\8.1.0-release-posix-seh.7z -oD:\a\buildRedPanda-CPP\mingw32
+          curl -L --fail --retry 3 --connect-timeout 30 -o 8.1.0-release-posix-dwarf.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw81/qt.tools.win32_mingw810/8.1.0-1-202411201005i686-8.1.0-gdb-11.2.0-release-posix-dwarf-rt_v6-rev0.7z
+          7z x D:\a\buildRedPanda-CPP\8.1.0-release-posix-dwarf.7z -oD:\a\buildRedPanda-CPP\mingw32
         }
-        if ($co_v -eq "mingw810_64"){
-          curl -L -o 8.1.0-release-posix-seh.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw81/qt.tools.win64_mingw810/8.1.0-1-202411201005x86_64-8.1.0-gdb-11.2.0-release-posix-seh-rt_v6-rev0.7z
+        elseif ($co_v -eq "mingw810_64"){
+          curl -L --fail --retry 3 --connect-timeout 30 -o 8.1.0-release-posix-seh.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw81/qt.tools.win64_mingw810/8.1.0-1-202411201005x86_64-8.1.0-gdb-11.2.0-release-posix-seh-rt_v6-rev0.7z
           7z x D:\a\buildRedPanda-CPP\8.1.0-release-posix-seh.7z -oD:\a\buildRedPanda-CPP\mingw64
         }
-        if ($co_v -eq "mingw1510_64"){
-          curl -L -o mingw1510.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw1510/qt.tools.win64_mingw1510/15.1.0-202610271023mingw1510.7z
+        elseif ($co_v -eq "mingw1510_64"){
+          curl -L --fail --retry 3 --connect-timeout 30 -o mingw1510.7z https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/tools_mingw1510/qt.tools.win64_mingw1510/15.1.0-202610271023mingw1510.7z
           7z x D:\a\buildRedPanda-CPP\mingw1510.7z -oD:\a\buildRedPanda-CPP\Tools\mingw1510_64
         }
-        if ($co_v -eq "mingw1620_64_UCRT"){
-          curl -L -o x86_64-release-posix-seh-ucrt.7z https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/x86_64-16.2.0-release-posix-seh-ucrt-rt_v14-rev1.7z
+        elseif ($co_v -eq "mingw1620_64_UCRT"){
+          curl -L --fail --retry 3 --connect-timeout 30 -o x86_64-release-posix-seh-ucrt.7z https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/x86_64-16.2.0-release-posix-seh-ucrt-rt_v14-rev1.7z
           7z x D:\a\buildRedPanda-CPP\x86_64-release-posix-seh-ucrt.7z -oD:\a\buildRedPanda-CPP
+        }
+        else {
+          Write-Host "ERROR: unknown compiler: $co_v"
+          exit 1
         }
 
         if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_32") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_32.7z }
-        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_32") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_32_RP.7z }
-        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_64") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_64.7z }
-        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_64") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_64_RP.7z }
-        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw1620_64_UCRT.7z }
-        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw1620_64_UCRT_RP.7z }
-        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "mingw1510_64") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_mingw1510_64.7z }
-        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "mingw1510_64") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_mingw1510_64_RP.7z }
-        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_mingw1620_64_UCRT.7z }
-        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_mingw1620_64_UCRT_RP.7z }
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_32.7z }
+        elseif (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_32") -and ($qt_r -eq "_RP" ))
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_32_RP.7z }
+        elseif (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_64") -and ($qt_r -eq "" ))
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_64.7z }
+        elseif (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_64") -and ($qt_r -eq "_RP" ))
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_64_RP.7z }
+        elseif (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "" ))
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw1620_64_UCRT.7z }
+        elseif (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "_RP" ))
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw1620_64_UCRT_RP.7z }
+        elseif (( $qt_v -eq "6.12.0") -and ($co_v -eq "mingw1510_64") -and ($qt_r -eq "" ))
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_mingw1510_64.7z }
+        elseif (( $qt_v -eq "6.12.0") -and ($co_v -eq "mingw1510_64") -and ($qt_r -eq "_RP" ))
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_mingw1510_64_RP.7z }
+        elseif (( $qt_v -eq "6.12.0") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "" ))
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_mingw1620_64_UCRT.7z }
+        elseif (( $qt_v -eq "6.12.0") -and ($co_v -eq "mingw1620_64_UCRT") -and ($qt_r -eq "_RP" ))
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_mingw1620_64_UCRT_RP.7z }
+        else
+          { Write-Host ("ERROR: no Qt package mapping for combo: {0} {1} {2}" -f $qt_v, $co_v, $qt_r); exit 1 }
         7z x D:\a\buildRedPanda-CPP\Qt.7z -oD:\a\buildRedPanda-CPP
 
     # 构建RedPanda-CPP(调用cmd编译脚本)
@@ -93,6 +99,7 @@ jobs:
         set COMPILER_VERSION=${{ matrix.compiler_version }}
         set QT_RP=${{ matrix.qt_rp }}
         call D:\a\buildRedPanda-CPP\buildRedPanda-CPP\build\MinGW64.cmd %QT_VERSION% %QT_TYPE% %COMPILER_VERSION% %QT_RP%
+        if errorlevel 1 exit /b 1
 
     # 打包
     - name: Package binaries

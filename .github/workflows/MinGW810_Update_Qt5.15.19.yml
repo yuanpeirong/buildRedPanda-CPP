@@ -40,22 +40,28 @@ jobs:
         cd ..  #Directory: D:\a\buildRedPanda-CPP
 
         if ($co_v -eq "mingw810_1620_32"){
-          curl -L -o i686-release-posix-dwarf-msvcrt.7z https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/i686-16.2.0-release-posix-dwarf-msvcrt-rt_v14-rev1.7z
+          curl -L --fail --retry 3 --connect-timeout 30 -o i686-release-posix-dwarf-msvcrt.7z https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/i686-16.2.0-release-posix-dwarf-msvcrt-rt_v14-rev1.7z
           7z x D:\a\buildRedPanda-CPP\i686-release-posix-dwarf-msvcrt.7z -oD:\a\buildRedPanda-CPP
         }
-        if ($co_v -eq "mingw810_1620_64"){
-          curl -L -o x86_64-release-posix-seh-msvcrt.7z https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/x86_64-16.2.0-release-posix-seh-msvcrt-rt_v14-rev1.7z
+        elseif ($co_v -eq "mingw810_1620_64"){
+          curl -L --fail --retry 3 --connect-timeout 30 -o x86_64-release-posix-seh-msvcrt.7z https://github.com/niXman/mingw-builds-binaries/releases/download/16.2.0-rt_v14-rev1/x86_64-16.2.0-release-posix-seh-msvcrt-rt_v14-rev1.7z
           7z x D:\a\buildRedPanda-CPP\x86_64-release-posix-seh-msvcrt.7z -oD:\a\buildRedPanda-CPP
+        }
+        else {
+          Write-Host "ERROR: unknown compiler: $co_v"
+          exit 1
         }
 
         if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1620_32") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_32.7z }
-        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1620_32") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_32_RP.7z }
-        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1620_64") -and ($qt_r -eq "" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_64.7z }
-        if (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1620_64") -and ($qt_r -eq "_RP" ))
-          { curl -L -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_64_RP.7z }
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_32.7z }
+        elseif (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1620_32") -and ($qt_r -eq "_RP" ))
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_32_RP.7z }
+        elseif (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1620_64") -and ($qt_r -eq "" ))
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_64.7z }
+        elseif (( $qt_v -eq "5.15.19") -and ($co_v -eq "mingw810_1620_64") -and ($qt_r -eq "_RP" ))
+          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt5.15.19_rev0/Qt_5.15.19-static-Release_mingw810_64_RP.7z }
+        else
+          { Write-Host ("ERROR: no Qt package mapping for combo: {0} {1} {2}" -f $qt_v, $co_v, $qt_r); exit 1 }
 
         7z x D:\a\buildRedPanda-CPP\Qt.7z -oD:\a\buildRedPanda-CPP
 
@@ -71,6 +77,7 @@ jobs:
         set COMPILER_VERSION=${{ matrix.compiler_version }}
         set QT_RP=${{ matrix.qt_rp }}
         call D:\a\buildRedPanda-CPP\buildRedPanda-CPP\build\MinGW64_Qt5.cmd %QT_VERSION% %QT_TYPE% %COMPILER_VERSION% %QT_RP%
+        if errorlevel 1 exit /b 1
 
     # 打包
     - name: Package binaries
