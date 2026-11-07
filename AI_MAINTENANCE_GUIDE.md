@@ -10,15 +10,15 @@
 
 - **定位**：CI 仓库，不含应用源码——运行时 `git clone` 上游 RedPanda-CPP（master 分支），配合 buildQt 发布的 Qt 静态库，产出小熊猫C++ 的 Windows 安装目录包（7z → Actions Artifacts）。
 - **构建系统**：上游 RedPanda-CPP 是 CMake 项目，本仓库用 **CMake + Ninja**（`-S/-B → --build --parallel → --install --strip`），Qt 静态库链接（`-DCMAKE_EXE_LINKER_FLAGS="-static"`），MSVC 线另加静态 CRT（`-DCMAKE_MSVC_RUNTIME_LIBRARY="MultiThreaded"`）。
-- **触发方式**：全部 `workflow_dispatch` 手动触发。
+- **触发方式**：全部 `workflow_dispatch` 手动触发（无 push/PR/schedule/事件联动）。
 
 ## 2. 上下游资产命名链（本仓库的核心约定，改错任何一环构建即失败）
 
 | 环节 | 命名 | 说明 |
 |------|------|------|
 | buildQt 工作流产物流 | `Qt_<QT_VERSION>-static-Release_<编译器代号>[_RP].7z` | FILE_NAME 约定，与 buildQt 仓库完全一致 |
-| buildQt 正式 Release tag | `Qt<QT_VERSION>_rev<N>`（当前为 `_rev0`） | 工作流自动发的是 temp release，**需人工整理成正式 tag** 供本仓库引用 |
-| 本仓库下载 URL | `https://github.com/yuanpeirong/buildQt/releases/download/Qt<版本>_rev0/Qt_<版本>-static-Release_<编译器代号>[_RP].7z` | 每个工作流的 Setup 步骤内按 matrix 组合逐条 `if` 写死 |
+| buildQt 正式 Release tag | `Qt<QT_VERSION>_rev<N>`（当前为 `_rev0`） | 工作流自动发的是 temp release；buildQt 的 `promote-release.yml`（手动触发）可自动归集为正式 tag 供本仓库引用 |
+| 本仓库下载 URL | `https://github.com/yuanpeirong/buildQt/releases/download/Qt<版本>_rev0/Qt_<版本>-static-Release_<编译器代号>[_RP].7z` | Setup 步骤内**按命名约定从 matrix 值直接拼接**（不再写 if 分支映射；810 混搭线多一行 `_1620→810` 资产名映射）；资产不存在时 `curl --fail` 立即报错 |
 | Qt.7z 解压后结构 | `<QT_VERSION>-static\<编译器代号>[_RP]\bin\...` | 包内顶层就是 `<版本>-static\`，解压到 runner 根目录即得此结构（与 buildQt 的 INSTALL_DIR 一致） |
 | 本仓库产物 | `RedPanda-CPP-Qt<版本>-static-<编译器代号>[_RP].7z` | upload-artifact 上传（本仓库不直接发 GitHub Release） |
 
@@ -75,13 +75,12 @@ RedPanda-CPP-Qt<版本>-static-<编译器代号>[_RP]\  产物目录（INSTALL_D
 
 ## 6. 版本升级 SOP（buildQt 发布新 Qt 版本后）
 
-1. **前置确认**：buildQt 侧已完成新版本全线编译、发布正式 Release（tag `Qt<新版本>_rev0`，资产含本仓库需要的全部 `Qt_<新版本>-static-Release_<编译器代号>[_RP].7z`）。
-2. **更新 matrix**：各 yml 的 `qt_version` 换成/新增新版本；`exclude` 段同步调整。
-3. **更新下载 if 分支**：Setup 步骤里每个 matrix 组合对应**一条 `if` 写死的 URL**——新增组合必须新增 if 分支，漏了会在解压 Qt.7z 时报错。
-4. **更新 cmd 硬编码**：涉及编译器升级的 cmd（`LLVM-MINGW_VERSION`、`Tools\*` 路径等）同步修改；新增编译器线则参照现有线复制 yml+cmd。
-5. **先跑 RP 组合**（matrix 里 `_RP`）验证，通过后再跑完整版。
-6. 通过后更新 `README.md` 版本矩阵（只记录已验证的组合）与 `HistoricalVersions.md`（旧版本挪入）。
-7. 提交、合并 main。
+1. **前置确认**：buildQt 侧已完成新版本全线编译，正式 Release（tag `Qt<新版本>_rev0`，含本仓库需要的全部 `Qt_<新版本>-static-Release_<编译器代号>[_RP].7z`）已就绪——可让 buildQt 跑一次 `promote-release.yml` 自动归集 temp release，或按其原流程人工整理。完成后在 Actions 页手动触发本仓库工作流。
+2. **更新 matrix**：各 yml 的 `qt_version` 换成/新增新版本；`exclude` 段同步调整。（Qt 下载 URL 按命名约定自动拼接，**无需再维护 if 分支**；仅 810 混搭线保留一行资产名映射。）
+3. **更新 cmd 硬编码**：涉及编译器升级的 cmd（`LLVM-MINGW_VERSION`、`Tools\*` 路径等）同步修改；新增编译器线则参照现有线复制 yml+cmd。
+4. **先跑 RP 组合**（matrix 里 `_RP`）验证，通过后再跑完整版。
+5. 通过后更新 `README.md` 版本矩阵（只记录已验证的组合）与 `HistoricalVersions.md`（旧版本挪入）。
+6. 提交、合并 main。
 
 ## 7. GitHub Actions 组件（已与 buildQt 对齐，2026-11 验证）
 
@@ -98,16 +97,16 @@ RedPanda-CPP-Qt<版本>-static-<编译器代号>[_RP]\  产物目录（INSTALL_D
 
 1. **上游不 pin 版本**：`git clone` RedPanda-CPP 的 master——上游推送即改变构建内容（产品定位如此：始终构建最新）。若遇上游构建失败，先确认是不是上游代码问题再查本仓库；如需可复现构建可改为 `git clone --branch <tag>`。
 2. **Qt.7z 解压位置强耦合**：直接 `-oD:\a\buildRedPanda-CPP` 依赖 buildQt 包内顶层为 `<版本>-static\` 的结构约定——buildQt 侧调整打包结构必须同步本仓库。
-3. **if 分支与 matrix 必须同步**：见 §6.3。
-4. **cmd 硬编码目录名与编译器包结构强耦合**：见 §4 末尾警告与 buildQt 指南 §5.3。
-5. **产物只上传 Artifacts**：本仓库工作流没有 GitHub Release 步骤，产物在 Actions 运行页下载（90 天保留期）。
-6. **runner 与 MSVC 版本**：MSVC 线的 `VS_INSTALL_PATH` 与镜像 VS 版本绑定（windows-2022 镜像 → VS2022 Enterprise；MSVC2026 线注意其 runner 对应镜像的 VS2026 安装路径），镜像更新可能改变路径。
-7. Qt 5.15.19 为 Qt 官方终版，相关线基本冻结；Qt 6 线随 buildQt 演进。
+3. **cmd 硬编码目录名与编译器包结构强耦合**：见 §4 末尾警告与 buildQt 指南 §5.3。
+4. **产物只上传 Artifacts，不发 Release**：本仓库的临时发布 tag 是固定的（`temp_RedPanda-CPP-Qt<版本>-...`），重复运行会 tag/资产冲突，故**不做 GitHub Release**（与 buildQt 不同——buildQt 一线一 temp tag 且低频运行、由人工清理）；产物在 Actions 运行页下载（90 天保留期）。
+5. **runner 与 MSVC 版本**：MSVC 线的 `VS_INSTALL_PATH` 与镜像 VS 版本绑定（windows-2022 镜像 → VS2022 Enterprise；MSVC2026 线注意其 runner 对应镜像的 VS2026 安装路径），镜像更新可能改变路径。
+6. Qt 5.15.19 为 Qt 官方终版，相关线基本冻结；Qt 6 线随 buildQt 演进。
 
 ## 9. 历史快照
 
 | 时间 | 内容 |
 |------|------|
+| 2026-11 | 加固改造（main-new 分支）：curl 加固；Qt 下载从 if 分支墙改为命名约定拼接；cmd 加门禁与 RedPandaIDE.exe 产物校验；工作流保持纯手动触发（产物保持仅 Artifacts，不做 Release——重复运行 tag 冲突） |
 | 2026-11 | GitHub Actions 组件对齐 buildQt：checkout v7 / setup-msbuild v3 / upload-artifact v7（vsdevenv@master 不变） |
 | 2026-11-06 | 更新至 Qt 6.12.0（matrix 换版 + buildQt `Qt6.12.0_rev0` 资产对接） |
 | 2026-08-22 | 更新至 Qt 6.11.2 |

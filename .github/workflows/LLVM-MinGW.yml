@@ -55,16 +55,14 @@ jobs:
           exit 1
         }
 
-        if (( $qt_v -eq "6.12.0") -and ($co_v -eq "llvm-mingw22.1.7_64_UCRT") -and ($qt_r -eq "" ))
-          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_llvm-mingw22.1.7_64_UCRT.7z }
-        elseif (( $qt_v -eq "6.12.0") -and ($co_v -eq "llvm-mingw22.1.7_64_UCRT") -and ($qt_r -eq "_RP" ))
-          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_llvm-mingw22.1.7_64_UCRT_RP.7z }
-        elseif (( $qt_v -eq "6.12.0") -and ($co_v -eq "llvm-mingw23.1.5_64_UCRT") -and ($qt_r -eq "" ))
-          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_llvm-mingw23.1.5_64_UCRT.7z }
-        elseif (( $qt_v -eq "6.12.0") -and ($co_v -eq "llvm-mingw23.1.5_64_UCRT") -and ($qt_r -eq "_RP" ))
-          { curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z https://github.com/yuanpeirong/buildQt/releases/download/Qt6.12.0_rev0/Qt_6.12.0-static-Release_llvm-mingw23.1.5_64_UCRT_RP.7z }
-        else
-          { Write-Host ("ERROR: no Qt package mapping for combo: {0} {1} {2}" -f $qt_v, $co_v, $qt_r); exit 1 }
+        # Qt库下载地址按命名约定拼接(buildQt 正式 release)
+        # 契约: tag=Qt<版本>_rev0, 资产=Qt_<版本>-static-Release_<编译器代号>[_RP].7z
+        # 资产不存在时 curl --fail 立即报错退出
+        $url = "https://github.com/yuanpeirong/buildQt/releases/download/Qt${qt_v}_rev0/Qt_${qt_v}-static-Release_${co_v}${qt_r}.7z"
+        if (-not (Test-Path Qt.7z)) {
+          curl -L --fail --retry 3 --connect-timeout 30 -o Qt.7z $url
+          if ($LASTEXITCODE -ne 0) { Write-Host "ERROR: Qt package download failed: $url"; exit 1 }
+        } else { Write-Host "cache hit: Qt.7z" }
         7z x D:\a\buildRedPanda-CPP\Qt.7z -oD:\a\buildRedPanda-CPP
 
     # 构建RedPanda-CPP(调用cmd编译脚本)
@@ -90,6 +88,7 @@ jobs:
       with:
         name: RedPanda-CPP-Qt${{ matrix.qt_version }}-${{ matrix.qt_type }}-${{ matrix.compiler_version }}${{ matrix.qt_rp }}
         path: RedPanda-CPP-Qt${{ matrix.qt_version }}-${{ matrix.qt_type }}-${{ matrix.compiler_version }}${{ matrix.qt_rp }}.7z
+
 
 # =============================================================================
 # 路径说明
